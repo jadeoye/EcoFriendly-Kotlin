@@ -1,5 +1,6 @@
 package com.example.initial
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,113 +10,206 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Column(
+    Card(
         modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .background(primary_color)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
+                .background(primary_color)
+                .padding(0.dp, 30.dp, 0.dp, 0.dp)
         ) {
             Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(red = 153, green = 204, blue = 255))
-                    .border(1.dp, Color.Transparent, RoundedCornerShape(16.dp))
-                    .clickable {
-                        navController.navigate("give")
-                    },
-                contentAlignment = Alignment.Center
+                modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 10.dp)
             ) {
-                Column(modifier = Modifier
-                    .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = "",
-                        tint = Color.White)
+                Column {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                                .clickable {},
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = "",
+                            tint = Color.White,
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 50.dp, 0.dp, 70.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            contentDescription = "", painter = painterResource(id = R.drawable.eco)
+                        )
+                    }
                     Text(
-                        text = "Give",
-                        color = Color.White)
+                        text = "Welcome! ✨",
+                        color = Color.White,
+                        fontSize = 23.sp,
+                        fontFamily = nunitoSansFont,
+                        fontWeight = FontWeight.Light
+                    )
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .background(primary_color)
+                    .fillMaxSize()
+                    .size(50.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 30.dp, 0.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(light_bg_blue_color)
+                                .border(1.dp, primary_color, RoundedCornerShape(16.dp))
+                                .clickable {
+                                    navController.navigate("give")
+                                }, contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Favorite,
+                                    contentDescription = "",
+                                    tint = primary_color
+                                )
+                                Text(
+                                    text = "Give",
+                                    color = primary_color,
+                                    fontFamily = nunitoSansFont
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(light_bg_blue_color)
+                                .border(1.dp, primary_color, RoundedCornerShape(16.dp))
+                                .clickable {
+                                    navController.navigate("donations")
+                                }, contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "",
+                                    tint = primary_color
+                                )
+                                Text(
+                                    text = "Donations",
+                                    color = primary_color,
+                                    fontFamily = nunitoSansFont
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(light_bg_blue_color)
+                                .border(1.dp, primary_color, RoundedCornerShape(16.dp))
+                                .clickable {
+                                    navController.navigate("wallet")
+                                }, contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Star,
+                                    contentDescription = "",
+                                    tint = primary_color
+                                )
+                                Text(
+                                    text = "Wallet",
+                                    color = primary_color,
+                                    fontFamily = nunitoSansFont
+                                )
+                            }
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Column(modifier = Modifier
+                            .align(Alignment.BottomCenter)) {
+                            Image(
+                                alpha = 0.2f,
+                                contentScale = ContentScale.Fit,
+                                contentDescription = "",
+                                alignment = Alignment.Center,
+                                painter = painterResource(id = R.drawable.grass)
+                            )
+                        }
+                    }
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(red = 255, green = 204, blue = 103))
-                    .border(1.dp, Color.Transparent, RoundedCornerShape(16.dp))
-                    .clickable {
-                        navController.navigate("donations")
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(modifier = Modifier
-                    .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = "",
-                        tint = Color.White)
-                    Text(
-                        text = "Donations",
-                        color = Color.White)
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(red = 153, green = 255, blue = 153))
-                    .border(1.dp, Color.Transparent, RoundedCornerShape(16.dp))
-                    .clickable {
-                        navController.navigate("wallet")
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(modifier = Modifier
-                    .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = "",
-                        tint = Color.White)
-                    Text(
-                        text = "Wallet",
-                        color = Color.White)
-                }
-            }
         }
     }
 }
