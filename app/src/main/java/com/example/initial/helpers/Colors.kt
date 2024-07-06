@@ -1,4 +1,4 @@
-package com.example.initial
+package com.example.initial.helpers
 
 import androidx.compose.ui.graphics.Color
 

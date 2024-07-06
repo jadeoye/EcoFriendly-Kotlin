@@ -1,4 +1,4 @@
-package com.example.initial
+package com.example.initial.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
