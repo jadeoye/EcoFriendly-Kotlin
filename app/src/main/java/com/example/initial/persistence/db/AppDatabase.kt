@@ -28,7 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null;
 
         fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
-            return INSTANCE ?: synchronized(lock = this) {
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext, AppDatabase::class.java, "app_database"
                 ).addCallback(AppDatabaseCallback(scope))
@@ -53,7 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         suspend fun populateUsers(iUser: IUser) {
-            val user = User(firstName = "User", lastName = "User", email = "user@mailinator.com", password = "123")
+            val user = User(firstName = "User", lastName = "User", email = "user", password = "123")
             iUser.add(user)
         }
 

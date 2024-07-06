@@ -17,7 +17,7 @@ import java.math.BigDecimal
 data class Wallet(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val amount: BigDecimal,
+    val amount: Double,
     val createdBy: Int,
     val isDeleted: Boolean = false
 )

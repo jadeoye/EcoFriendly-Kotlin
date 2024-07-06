@@ -15,13 +15,16 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -38,12 +41,17 @@ import com.example.initial.R
 import com.example.initial.helpers.android_padding_top
 import com.example.initial.helpers.nunitoSansFont
 import com.example.initial.helpers.primary_color
+import com.example.initial.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var loginResult by remember { mutableStateOf<Boolean?>(null) }
+    val isLoading by viewModel.isLoading.observeAsState(false)
+    val loginError by viewModel.loginErrorMessage.observeAsState(null)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,9 +123,23 @@ fun LoginScreen(navController: NavController) {
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = primary_color),
                 onClick = {
-                    navController.navigate("home")
+                   viewModel.authenticate(email, password)
                 }) {
                 Text(text = "Sign In")
+            }
+
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            loginError?.let { error ->
+                Snackbar(modifier = Modifier, action = {
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Retry")
+                    }
+                }) {
+                    Text(text = error)
+                }
             }
         }
     }
@@ -126,5 +148,5 @@ fun LoginScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController())
+    // LoginScreen(navController = rememberNavController())
 }
