@@ -1,14 +1,11 @@
-package com.example.initial.viewmodels
+package com.example.initial.viewmodels.category
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.initial.persistence.entities.Category
 import com.example.initial.repositories.CategoryRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 class CategoryViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
-    suspend fun list(): Flow<List<Category>> {
+    suspend fun list(): List<Category> {
         return categoryRepository.list()
     }
 }

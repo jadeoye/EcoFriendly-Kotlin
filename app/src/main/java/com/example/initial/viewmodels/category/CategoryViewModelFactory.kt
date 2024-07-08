@@ -1,9 +1,8 @@
-package com.example.initial.viewmodels.factories
+package com.example.initial.viewmodels.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.initial.repositories.CategoryRepository
-import com.example.initial.viewmodels.CategoryViewModel
 
 class CategoryViewModelFactory(private val repository: CategoryRepository) : ViewModelProvider.Factory {
     override fun<T: ViewModel> create(modelClass: Class<T>) : T {

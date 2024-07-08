@@ -17,7 +17,9 @@ import java.math.BigDecimal
 data class Wallet(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val amount: Double,
+    val amount: Int,
+    val createdOn: Long = System.currentTimeMillis(),
+    val previousWalletId: Int? = null,
     val createdBy: Int,
     val isDeleted: Boolean = false
 )

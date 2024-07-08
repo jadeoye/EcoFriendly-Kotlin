@@ -22,6 +22,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,9 +40,11 @@ import com.example.initial.R
 import com.example.initial.helpers.light_bg_blue_color
 import com.example.initial.helpers.nunitoSansFont
 import com.example.initial.helpers.primary_color
+import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionViewModel) {
+    val user by userSessionViewModel.user.observeAsState()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +83,7 @@ fun HomeScreen(navController: NavController) {
                         )
                     }
                     Text(
-                        text = "Welcome! ✨",
+                        text = "Welcome ${user?.firstName}! ✨",
                         color = Color.White,
                         fontSize = 23.sp,
                         fontFamily = nunitoSansFont,
@@ -216,5 +220,5 @@ fun HomeScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController())
+    HomeScreen(navController = rememberNavController(), userSessionViewModel = UserSessionViewModel())
 }

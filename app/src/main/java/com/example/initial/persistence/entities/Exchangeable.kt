@@ -27,6 +27,7 @@ data class Exchangeable(
     val name: String,
     val photo: String,
     val createdBy: Int,
+    val createdOn: Long = System.currentTimeMillis(),
     val categoryId: Int,
     val isDeleted: Boolean = false
 )

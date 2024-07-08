@@ -36,17 +36,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.initial.R
 import com.example.initial.helpers.android_padding_top
 import com.example.initial.helpers.nunitoSansFont
 import com.example.initial.helpers.primary_color
-import com.example.initial.viewmodels.LoginViewModel
+import com.example.initial.viewmodels.login.LoginViewModel
+import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel, userSessionViewModel: UserSessionViewModel) {
+    var email by remember { mutableStateOf("user") }
+    var password by remember { mutableStateOf("123") }
     var passwordVisible by remember { mutableStateOf(false) }
     var loginResult by remember { mutableStateOf<Boolean?>(null) }
     val isLoading by viewModel.isLoading.observeAsState(false)
@@ -94,7 +94,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            OutlinedTextField(value = email,
+            OutlinedTextField(
+                value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth()
@@ -102,7 +103,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = password,
+            OutlinedTextField(
+                value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -123,7 +125,12 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = primary_color),
                 onClick = {
-                   viewModel.authenticate(email, password)
+                    viewModel.authenticate(email, password) { user ->
+                        if (user != null && user.id > 0) {
+                            navController.navigate("home")
+                            userSessionViewModel.login(user)
+                        }
+                    }
                 }) {
                 Text(text = "Sign In")
             }

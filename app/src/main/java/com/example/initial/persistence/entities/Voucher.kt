@@ -18,8 +18,9 @@ data class Voucher(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val code: String,
-    val amount: Double,
+    val amount: Int,
     val isConsumed: Boolean,
+    val createdOn: Long = System.currentTimeMillis(),
     val ownerId: Int,
     val isDeleted: Boolean = false
 )

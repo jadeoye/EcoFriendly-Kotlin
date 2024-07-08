@@ -1,6 +1,7 @@
 package com.example.initial.persistence.db
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,7 +12,9 @@ import com.example.initial.persistence.entities.User
 import com.example.initial.persistence.entities.Voucher
 import com.example.initial.persistence.entities.Wallet
 import com.example.initial.persistence.interfaces.ICategory
+import com.example.initial.persistence.interfaces.IExchangeable
 import com.example.initial.persistence.interfaces.IUser
+import com.example.initial.persistence.interfaces.IWallet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,6 +25,8 @@ import kotlinx.coroutines.launch
 abstract class AppDatabase : RoomDatabase() {
     abstract fun IUser(): IUser
     abstract fun ICategory(): ICategory
+    abstract fun IExchangeable(): IExchangeable
+    abstract fun IWallet(): IWallet
 
     companion object {
         @Volatile
@@ -29,11 +34,12 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
             return INSTANCE ?: synchronized(this) {
+                context.deleteDatabase("app_database")
                 val instance = Room.databaseBuilder(
                     context.applicationContext, AppDatabase::class.java, "app_database"
-                ).addCallback(AppDatabaseCallback(scope))
-                    .build()
+                ).fallbackToDestructiveMigration().addCallback(AppDatabaseCallback(scope)).build()
                 INSTANCE = instance
+                instance.query("SELECT 1", null)
                 instance
             }
         }
@@ -41,7 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
-    ) : Callback() {
+    ) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
