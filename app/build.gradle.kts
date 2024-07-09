@@ -93,4 +93,5 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation ("com.microsoft.signalr:signalr:5.0.10")
 }

@@ -33,20 +33,21 @@ class WalletRepository(
         return points * 0.02
     }
 
-    suspend fun redeemPoints() {
+    suspend fun redeemPoints() : Pair<Double, Double> {
         val userId = userSessionViewModel.user.value!!.id
         val lastWallet = walletInterface.lastWallet(userSessionViewModel.user.value!!.id)
         val unusedVoucher = voucherInterface.getUnusedVoucher(userId)
         val redeemedPoints = getRedeemablePoints(lastWallet?.amount ?: 0)
+        val cashRedeemed = redeemedPoints * 0.02
 
         if (unusedVoucher != null) {
-            unusedVoucher.amount += lastWallet?.amount ?: 0
+            unusedVoucher.amount += (lastWallet?.amount ?: 0) + cashRedeemed
             unusedVoucher.createdOn =
                 System.currentTimeMillis() // ideally we should use a new property 'modifiedOn'
             voucherInterface.update(unusedVoucher)
         } else {
             val voucher =
-                Voucher(code = generateRandomString(), amount = redeemedPoints, ownerId = userId)
+                Voucher(code = generateRandomString(), amount = cashRedeemed, ownerId = userId)
             voucherInterface.add(voucher)
         }
 
@@ -56,6 +57,8 @@ class WalletRepository(
             createdBy = userId
         )
         walletInterface.add(wallet)
+
+        return Pair(redeemedPoints, cashRedeemed)
     }
 
     private fun generateRandomString(length: Int = 6): String {

@@ -251,7 +251,7 @@ fun GiveScreen(navController: NavController, giveViewModel: GiveViewModel) {
                             if (name.isNotEmpty() && selectedCategory!!.id > 0 && base64String != null) {
                                 (context as ComponentActivity).lifecycleScope.launch {
                                     giveViewModel.give(
-                                        name, selectedCategory!!, base64String!!
+                                        context, name, selectedCategory!!, base64String!!
                                     )
 
                                     name = ""
