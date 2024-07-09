@@ -14,6 +14,7 @@ import com.example.initial.persistence.entities.Wallet
 import com.example.initial.persistence.interfaces.ICategory
 import com.example.initial.persistence.interfaces.IExchangeable
 import com.example.initial.persistence.interfaces.IUser
+import com.example.initial.persistence.interfaces.IVoucher
 import com.example.initial.persistence.interfaces.IWallet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun ICategory(): ICategory
     abstract fun IExchangeable(): IExchangeable
     abstract fun IWallet(): IWallet
+    abstract fun IVoucher(): IVoucher
 
     companion object {
         @Volatile
@@ -34,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                context.deleteDatabase("app_database")
+                // context.deleteDatabase("app_database")
                 val instance = Room.databaseBuilder(
                     context.applicationContext, AppDatabase::class.java, "app_database"
                 ).fallbackToDestructiveMigration().addCallback(AppDatabaseCallback(scope)).build()

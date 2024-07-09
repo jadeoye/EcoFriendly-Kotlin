@@ -60,17 +60,33 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .padding(0.dp, 0.dp, 10.dp, 0.dp)
-                                .clickable {},
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "",
-                            tint = Color.White,
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(0.dp, 10.dp, 0.dp, 0.dp)
+                                    .clickable {
+                                        navController.navigate("login")
+                                    },
+                                text = "Logout",
+                                fontFamily = nunitoSansFont,
+                                fontWeight = FontWeight.Light,
+                                color = Color.White
+                            )
+                            Icon(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                                    .clickable {},
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = "",
+                                tint = Color.White,
+                            )
+                        }
                     }
                     Box(
                         modifier = Modifier
@@ -196,11 +212,11 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
                     }
 
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Column(modifier = Modifier
-                            .align(Alignment.BottomCenter)) {
+                        Column(
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
                             Image(
                                 alpha = 0.2f,
                                 contentScale = ContentScale.Fit,
@@ -220,5 +236,7 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController(), userSessionViewModel = UserSessionViewModel())
+    HomeScreen(
+        navController = rememberNavController(), userSessionViewModel = UserSessionViewModel()
+    )
 }

@@ -16,6 +16,5 @@ class GiveViewModel(
 
     suspend fun give(name: String, category: Category, photo: String) {
         exchangeableRepository.add(name, category, photo)
-
     }
 }

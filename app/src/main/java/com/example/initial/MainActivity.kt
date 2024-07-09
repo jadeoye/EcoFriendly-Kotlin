@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.initial.persistence.db.AppDatabase
 import com.example.initial.repositories.CategoryRepository
+import com.example.initial.repositories.DonationsRepository
 import com.example.initial.repositories.ExchangeableRepository
 import com.example.initial.repositories.UserRepository
 import com.example.initial.repositories.WalletRepository
@@ -28,11 +29,15 @@ import com.example.initial.screens.LoginScreen
 import com.example.initial.screens.WalletScreen
 import com.example.initial.screens.views.CameraViewModel
 import com.example.initial.ui.theme.InitialTheme
+import com.example.initial.viewmodels.donations.DonationsViewModel
+import com.example.initial.viewmodels.donations.DonationsViewModelFactory
 import com.example.initial.viewmodels.give.GiveViewModel
 import com.example.initial.viewmodels.give.GiveViewModelFactory
 import com.example.initial.viewmodels.login.LoginViewModel
 import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 import com.example.initial.viewmodels.login.LoginViewModelFactory
+import com.example.initial.viewmodels.wallets.WalletViewModel
+import com.example.initial.viewmodels.wallets.WalletViewModelFactory
 
 class MainActivity : ComponentActivity() {
     private val userSessionViewModel: UserSessionViewModel by viewModels()
@@ -65,28 +70,39 @@ fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewMod
             val iWallet = database.IWallet()
             val iCategory = database.ICategory()
             val iExchangeable = database.IExchangeable()
+            val iVoucher = database.IVoucher()
             val categoryRepository = CategoryRepository(iCategory)
-            val walletRepository = WalletRepository(iWallet, userSessionViewModel)
+            val walletRepository = WalletRepository(iWallet, iVoucher, userSessionViewModel)
             val exchangeableRepository =
                 ExchangeableRepository(iExchangeable, walletRepository, userSessionViewModel)
             val viewModel: GiveViewModel = viewModel(
                 factory = GiveViewModelFactory(
-                    categoryRepository,
-                    exchangeableRepository
+                    categoryRepository, exchangeableRepository
                 )
             )
             GiveScreen(navController, viewModel)
         }
-        composable("donations") { DonationsScreen(navController) }
-        composable("wallet") { WalletScreen(navController) }
+        composable("donations") {
+            val iExchangeable = database.IExchangeable()
+            val repository = DonationsRepository(iExchangeable)
+            val viewModel: DonationsViewModel =
+                viewModel(factory = DonationsViewModelFactory(repository, userSessionViewModel))
+            DonationsScreen(navController, viewModel)
+        }
+        composable("wallet") {
+            val iWallet = database.IWallet()
+            val iVoucher = database.IVoucher()
+            val repository = WalletRepository(iWallet, iVoucher, userSessionViewModel)
+            val viewModel: WalletViewModel = viewModel(factory = WalletViewModelFactory(repository))
+            WalletScreen(navController, viewModel)
+        }
     }
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = "Hello $name!", modifier = modifier
     )
 }
 

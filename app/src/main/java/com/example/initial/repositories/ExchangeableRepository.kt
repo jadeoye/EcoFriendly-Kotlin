@@ -12,13 +12,14 @@ class ExchangeableRepository(
     private val userSessionViewModel: UserSessionViewModel
 ) {
     suspend fun add(name: String, category: Category, photo: String) {
+        val walletId = walletRepository.add(category.points)
         val exchangeable = Exchangeable(
             name = name,
             categoryId = category.id,
             photo = photo,
+            walletId = walletId,
             createdBy = userSessionViewModel.user.value!!.id
         )
         exchangeableInterface.add(exchangeable)
-        walletRepository.add(category.points)
     }
 }
