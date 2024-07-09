@@ -20,7 +20,7 @@ data class Voucher(
     val code: String,
     var amount: Double,
     val isConsumed: Boolean = false,
-    val createdOn: Long = System.currentTimeMillis(),
+    var createdOn: Long = System.currentTimeMillis(),
     val ownerId: Int,
     val isDeleted: Boolean = false
 )

@@ -41,9 +41,12 @@ class WalletRepository(
 
         if (unusedVoucher != null) {
             unusedVoucher.amount += lastWallet?.amount ?: 0
+            unusedVoucher.createdOn =
+                System.currentTimeMillis() // ideally we should use a new property 'modifiedOn'
             voucherInterface.update(unusedVoucher)
         } else {
-            val voucher = Voucher(code = generateRandomString(), amount = redeemedPoints, ownerId = userId)
+            val voucher =
+                Voucher(code = generateRandomString(), amount = redeemedPoints, ownerId = userId)
             voucherInterface.add(voucher)
         }
 

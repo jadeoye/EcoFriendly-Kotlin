@@ -21,11 +21,13 @@ import com.example.initial.repositories.CategoryRepository
 import com.example.initial.repositories.DonationsRepository
 import com.example.initial.repositories.ExchangeableRepository
 import com.example.initial.repositories.UserRepository
+import com.example.initial.repositories.VoucherRepository
 import com.example.initial.repositories.WalletRepository
 import com.example.initial.screens.DonationsScreen
 import com.example.initial.screens.GiveScreen
 import com.example.initial.screens.HomeScreen
 import com.example.initial.screens.LoginScreen
+import com.example.initial.screens.VouchersScreen
 import com.example.initial.screens.WalletScreen
 import com.example.initial.screens.views.CameraViewModel
 import com.example.initial.ui.theme.InitialTheme
@@ -36,6 +38,8 @@ import com.example.initial.viewmodels.give.GiveViewModelFactory
 import com.example.initial.viewmodels.login.LoginViewModel
 import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 import com.example.initial.viewmodels.login.LoginViewModelFactory
+import com.example.initial.viewmodels.vouchers.VouchersViewModel
+import com.example.initial.viewmodels.vouchers.VouchersViewModelFactory
 import com.example.initial.viewmodels.wallets.WalletViewModel
 import com.example.initial.viewmodels.wallets.WalletViewModelFactory
 
@@ -95,6 +99,13 @@ fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewMod
             val repository = WalletRepository(iWallet, iVoucher, userSessionViewModel)
             val viewModel: WalletViewModel = viewModel(factory = WalletViewModelFactory(repository))
             WalletScreen(navController, viewModel)
+        }
+        composable("vouchers") {
+            val iVoucher = database.IVoucher()
+            val repository = VoucherRepository(iVoucher)
+            val viewModel: VouchersViewModel =
+                viewModel(factory = VouchersViewModelFactory(repository, userSessionViewModel))
+            VouchersScreen(navController, viewModel)
         }
     }
 }
