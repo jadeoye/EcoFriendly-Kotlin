@@ -20,6 +20,6 @@ class GiveViewModel(
 
     suspend fun give(context: Context, name: String, category: Category, photo: String) {
         exchangeableRepository.add(name, category, photo)
-        // sendNotificationToWeb(context, "donations", category.name)
+        sendNotificationToWeb(context, "Donation|1.0")
     }
 }

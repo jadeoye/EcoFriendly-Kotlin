@@ -18,8 +18,9 @@ class WalletViewModel(private val walletRepository: WalletRepository) : ViewMode
     }
 
     suspend fun redeemPoints(context: Context) {
-        var data = walletRepository.redeemPoints()
-        // sendNotificationToWeb(context, "points", data.first.toString())
-        // sendNotificationToWeb(context, "cash", data.second.toString())
+        val data = walletRepository.redeemPoints()
+        val pointsToken = "Points|${data.first}"
+        val cashToken = "Cash|${data.second}"
+        sendNotificationToWeb(context, "${pointsToken}#${cashToken}")
     }
 }

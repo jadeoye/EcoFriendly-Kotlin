@@ -60,7 +60,9 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 20.dp, 0.dp, 0.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),

@@ -12,5 +12,5 @@ interface IWallet {
     suspend fun add(wallet: Wallet): Long
 
     @Query("SELECT * FROM wallets WHERE createdBy = :userId AND isDeleted = 0 ORDER BY createdOn DESC LIMIT 1")
-    suspend fun lastWallet(userId: Int): Wallet?
+    suspend fun currentWallet(userId: Int): Wallet?
 }

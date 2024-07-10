@@ -51,8 +51,7 @@ import java.util.Locale
 
 @Composable
 fun VouchersScreen(
-    navController: NavController,
-    vouchersViewModel: VouchersViewModel
+    navController: NavController, vouchersViewModel: VouchersViewModel
 ) {
     var vouchers by remember { mutableStateOf(listOf<Voucher>()) }
 
@@ -75,7 +74,9 @@ fun VouchersScreen(
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 20.dp, 0.dp, 0.dp)
                     ) {
                         Icon(
                             modifier = Modifier

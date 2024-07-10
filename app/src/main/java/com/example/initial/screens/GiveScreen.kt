@@ -108,7 +108,9 @@ fun GiveScreen(navController: NavController, giveViewModel: GiveViewModel) {
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 20.dp, 0.dp, 0.dp),
                     ) {
                         Icon(
                             modifier = Modifier
@@ -133,10 +135,12 @@ fun GiveScreen(navController: NavController, giveViewModel: GiveViewModel) {
                             painter = painterResource(id = R.drawable.give)
                         )
                     }
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .offset(0.dp, -10.dp),
-                        contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(0.dp, -10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Text(
                             text = "Give",
                             color = Color.White,
@@ -215,7 +219,8 @@ fun GiveScreen(navController: NavController, giveViewModel: GiveViewModel) {
                                 text = "Select Item's Photo:",
                                 fontFamily = nunitoSansFont,
                             )
-                            IconButton(modifier = Modifier,
+                            IconButton(
+                                modifier = Modifier,
                                 onClick = { galleryLauncher.launch("image/*") }) {
                                 Icon(
                                     modifier = Modifier.size(80.dp),

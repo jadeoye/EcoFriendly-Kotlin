@@ -86,7 +86,9 @@ fun WalletScreen(navController: NavController, walletViewModel: WalletViewModel)
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 20.dp, 0.dp, 0.dp)
                     ) {
                         Icon(
                             modifier = Modifier
@@ -194,7 +196,7 @@ fun WalletScreen(navController: NavController, walletViewModel: WalletViewModel)
                                 if (cashRedeemable > 0) {
                                     Button(modifier = Modifier.fillMaxWidth(), onClick = {
                                         (context as ComponentActivity).lifecycleScope.launch {
-                                            walletViewModel.redeemPoints()
+                                            walletViewModel.redeemPoints(context)
                                             cashRedeemable = 0.0
                                             walletPoints = 0
                                             Toast.makeText(

@@ -74,7 +74,9 @@ fun DonationsScreen(navController: NavController, donationsViewModel: DonationsV
             ) {
                 Column {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 20.dp, 0.dp, 0.dp)
                     ) {
                         Icon(
                             modifier = Modifier
