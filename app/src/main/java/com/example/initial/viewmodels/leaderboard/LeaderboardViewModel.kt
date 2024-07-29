@@ -1,0 +1,20 @@
+package com.example.initial.viewmodels.leaderboard
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.initial.persistence.entities.Leaderboard
+import com.example.initial.repositories.LeaderboardRepository
+import kotlinx.coroutines.launch
+
+class LeaderboardViewModel(private val leaderboardRepository: LeaderboardRepository) : ViewModel() {
+    private val _leaderboard = MutableLiveData<List<Leaderboard>>()
+    val leaderboard: LiveData<List<Leaderboard>> get() = _leaderboard
+
+    fun fetchLeaderboard(period: Long) {
+        viewModelScope.launch {
+            _leaderboard.value = leaderboardRepository.listTopDonors(period)
+        }
+    }
+}
