@@ -11,6 +11,6 @@ interface ILeaderboard {
     @Query("SELECT * FROM leaderboard WHERE createdOn > :period ORDER BY points DESC LIMIT 10")
     suspend fun listTopDonors(period: Long): List<Leaderboard>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(leaderboard: Leaderboard)
 }

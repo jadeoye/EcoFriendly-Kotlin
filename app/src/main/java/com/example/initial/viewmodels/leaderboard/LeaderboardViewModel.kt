@@ -1,3 +1,5 @@
+// LeaderboardViewModel.kt
+
 package com.example.initial.viewmodels.leaderboard
 
 import androidx.lifecycle.LiveData
@@ -12,36 +14,19 @@ class LeaderboardViewModel(private val leaderboardRepository: LeaderboardReposit
     private val _leaderboard = MutableLiveData<List<Leaderboard>>()
     val leaderboard: LiveData<List<Leaderboard>> get() = _leaderboard
 
-    init {
-        // Populate with default data
-        val defaultLeaderboard = listOf(
-            Leaderboard(name = "Alice", points = 100, createdOn = System.currentTimeMillis()),
-            Leaderboard(name = "Bob", points = 90, createdOn = System.currentTimeMillis()),
-            Leaderboard(name = "Charlie", points = 80, createdOn = System.currentTimeMillis()),
-            Leaderboard(name = "David", points = 70, createdOn = System.currentTimeMillis()),
-            Leaderboard(name = "Eve", points = 60, createdOn = System.currentTimeMillis())
-        )
-
-        // Sort by points and assign rank
-        val sortedLeaderboard = defaultLeaderboard.sortedByDescending { it.points }
-            .mapIndexed { index, player -> player to (index + 1) }
-
-        _leaderboard.value = sortedLeaderboard.map { (player, rank) ->
-            player.copy(name = "#$rank ${player.name}")
-        }
-    }
-
-    fun fetchLeaderboard(period: Long) {
+    fun fetchLeaderboard(period: Long, currentUser: Leaderboard) {
         viewModelScope.launch {
-            val fetchedLeaderboard = leaderboardRepository.listTopDonors(period)
+            val defaultUsers = listOf(
+                Leaderboard(name = "Sodiq", points = 250, createdOn = System.currentTimeMillis()),
+                Leaderboard(name = "Jeremiah", points = 200, createdOn = System.currentTimeMillis()),
+                Leaderboard(name = "Angeline", points = 180, createdOn = System.currentTimeMillis())
+            )
 
-            // Sort by points and assign rank
-            val sortedLeaderboard = fetchedLeaderboard.sortedByDescending { it.points }
-                .mapIndexed { index, player -> player to (index + 1) }
+            // Combine default users with current leaderboard data and the logged-in user
+            val leaderboardData = leaderboardRepository.listTopDonors(period)
+            val updatedLeaderboard = defaultUsers + leaderboardData + currentUser
 
-            _leaderboard.value = sortedLeaderboard.map { (player, rank) ->
-                player.copy(name = "#$rank ${player.name}")
-            }
+            _leaderboard.value = updatedLeaderboard
         }
     }
 }
