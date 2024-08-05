@@ -26,11 +26,31 @@ import androidx.navigation.compose.rememberNavController
 import com.example.initial.R
 import com.example.initial.helpers.nunitoSansFont
 import com.example.initial.helpers.primary_color
+import com.example.initial.persistence.entities.Leaderboard
 import com.example.initial.viewmodels.leaderboard.LeaderboardViewModel
+import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 
 @Composable
-fun LeaderboardScreen(navController: NavController, leaderboardViewModel: LeaderboardViewModel) {
+fun LeaderboardScreen(
+    navController: NavController,
+    leaderboardViewModel: LeaderboardViewModel,
+    userSessionViewModel: UserSessionViewModel
+) {
     val leaderboard by leaderboardViewModel.leaderboard.observeAsState(emptyList())
+    val currentUser = userSessionViewModel.user.observeAsState().value
+
+    // Add the logged-in user to the leaderboard if not already present
+    val leaderboardWithCurrentUser = leaderboard.toMutableList().apply {
+        if (currentUser != null && none { it.name == currentUser.firstName }) {
+            add(
+                Leaderboard(
+                    name = currentUser.firstName,
+                    points = 0,
+                    createdOn = System.currentTimeMillis() // Add this line to set createdOn
+                )
+            )
+        }
+    }
 
     LaunchedEffect(key1 = leaderboardViewModel) {
         leaderboardViewModel.fetchLeaderboard(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
@@ -121,31 +141,41 @@ fun LeaderboardScreen(navController: NavController, leaderboardViewModel: Leader
                                 text = "Rank",
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = nunitoSansFont,
-                                fontSize = 18.sp
+                                fontSize = 18.sp,
+                                modifier = Modifier.weight(1f)
                             )
                             Text(
                                 text = "User",
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = nunitoSansFont,
-                                fontSize = 18.sp
+                                fontSize = 18.sp,
+                                modifier = Modifier.weight(2f)
                             )
                             Text(
                                 text = "Points",
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = nunitoSansFont,
-                                fontSize = 18.sp
+                                fontSize = 18.sp,
+                                modifier = Modifier.weight(1f)
                             )
                         }
 
                         LazyColumn {
-                            items(leaderboard) { player ->
+                            items(leaderboardWithCurrentUser.sortedByDescending { it.points }) { player ->
+                                val isCurrentUser = player.name == currentUser?.firstName
+                                val backgroundColor =
+                                    if (isCurrentUser) Color.LightGray else Color.Transparent
+
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(10.dp)
+                                        .background(backgroundColor)
+                                        .padding(horizontal = 16.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "${leaderboard.indexOf(player) + 1}",
+                                        text = "${leaderboardWithCurrentUser.indexOf(player) + 1}",
                                         fontFamily = nunitoSansFont,
                                         fontSize = 18.sp,
                                         modifier = Modifier.weight(1f)
@@ -154,12 +184,14 @@ fun LeaderboardScreen(navController: NavController, leaderboardViewModel: Leader
                                         text = player.name,
                                         fontFamily = nunitoSansFont,
                                         fontSize = 18.sp,
+                                        fontWeight = if (isCurrentUser) FontWeight.Bold else FontWeight.Normal,
                                         modifier = Modifier.weight(2f)
                                     )
                                     Text(
                                         text = player.points.toString(),
                                         fontFamily = nunitoSansFont,
                                         fontSize = 18.sp,
+                                        fontWeight = if (isCurrentUser) FontWeight.Bold else FontWeight.Normal,
                                         modifier = Modifier.weight(1f)
                                     )
                                 }
@@ -178,5 +210,6 @@ fun LeaderboardScreen(navController: NavController, leaderboardViewModel: Leader
 fun LeaderboardScreenPreview() {
     val navController = rememberNavController()
     val leaderboardViewModel: LeaderboardViewModel = viewModel()
-    LeaderboardScreen(navController, leaderboardViewModel)
+    val userSessionViewModel: UserSessionViewModel = viewModel()
+    LeaderboardScreen(navController, leaderboardViewModel, userSessionViewModel)
 }

@@ -217,32 +217,42 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
 
                     Spacer(modifier = Modifier.height(16.dp)) // Add some spacing
 
-                    Box(
+                    // Added a new row for the leaderboard
+                    Row(
                         modifier = Modifier
-                            .size(100.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(light_bg_blue_color)
-                            .border(1.dp, primary_color, RoundedCornerShape(16.dp))
-                            .clickable {
-                                navController.navigate("leaderboard")
-                            },
-                        contentAlignment = Alignment.Center
+                            .fillMaxWidth()
+                            .padding(top = 20.dp), // Adjust top padding
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(light_bg_blue_color)
+                                .border(1.dp, primary_color, RoundedCornerShape(16.dp))
+                                .clickable {
+                                    navController.navigate("leaderboard")
+                                },
+                            contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.leaderboard_icon),
-                                contentDescription = "",
-                                tint = primary_color
-                            )
-                            Text(
-                                text = "Leaderboard",
-                                color = primary_color,
-                                fontFamily = nunitoSansFont
-                            )
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.leaderboard_icon), // Ensure this icon is available
+                                    contentDescription = "",
+                                    tint = primary_color
+                                )
+                                Text(
+                                    text = "Leaderboard",
+                                    color = primary_color,
+                                    fontFamily = nunitoSansFont,
+                                    maxLines = 1, // Ensure text fits within bounds
+                                    fontSize = 12.sp // Adjust font size if needed
+                                )
+                            }
                         }
                     }
 
@@ -263,7 +273,6 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
                     }
                 }
             }
-
         }
     }
 }

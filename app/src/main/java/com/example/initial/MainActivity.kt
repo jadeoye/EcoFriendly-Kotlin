@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.initial.persistence.db.AppDatabase
 import com.example.initial.persistence.entities.User
 import com.example.initial.repositories.*
+import androidx.compose.material3.Text
 import com.example.initial.screens.*
 import com.example.initial.ui.theme.InitialTheme
 import com.example.initial.viewmodels.donations.DonationsViewModel
@@ -72,7 +72,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewModel) {
     val navController = rememberNavController()
@@ -124,8 +123,10 @@ fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewMod
         composable("leaderboard") {
             val iLeaderboard = database.ILeaderboard()
             val repository = LeaderboardRepository(iLeaderboard)
-            val viewModel: LeaderboardViewModel = viewModel(factory = LeaderboardViewModelFactory(repository))
-            LeaderboardScreen(navController, viewModel)
+            val viewModel: LeaderboardViewModel =
+                viewModel(factory = LeaderboardViewModelFactory(repository))
+            // Pass the userSessionViewModel to LeaderboardScreen
+            LeaderboardScreen(navController, viewModel, userSessionViewModel)
         }
     }
 }
