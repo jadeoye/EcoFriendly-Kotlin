@@ -19,6 +19,7 @@ data class Voucher(
     val id: Int = 0,
     val code: String,
     var amount: Double,
+    val points: Int,
     val isConsumed: Boolean = false,
     var createdOn: Long = System.currentTimeMillis(),
     val ownerId: Int,

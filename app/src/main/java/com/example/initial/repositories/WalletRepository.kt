@@ -46,7 +46,7 @@ class WalletRepository(
             voucherInterface.update(unusedVoucher)
         } else {
             val voucher =
-                Voucher(code = generateRandomString(), amount = cashRedeemed, ownerId = userId)
+                Voucher(code = generateRandomString(), points = lastWalletAmount, amount = cashRedeemed, ownerId = userId)
             voucherInterface.add(voucher)
         }
 

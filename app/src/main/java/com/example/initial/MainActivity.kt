@@ -102,7 +102,8 @@ fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewMod
         }
         composable("vouchers") {
             val iVoucher = database.IVoucher()
-            val repository = VoucherRepository(iVoucher)
+            val iWallet = database.IWallet()
+            val repository = VoucherRepository(iVoucher, iWallet, userSessionViewModel)
             val viewModel: VouchersViewModel =
                 viewModel(factory = VouchersViewModelFactory(repository, userSessionViewModel))
             VouchersScreen(navController, viewModel)

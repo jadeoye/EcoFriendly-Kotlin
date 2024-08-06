@@ -1,5 +1,7 @@
 package com.example.initial.screens
 
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -33,10 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.initial.R
 import com.example.initial.helpers.nunitoSansFont
@@ -45,6 +50,7 @@ import com.example.initial.persistence.entities.Voucher
 import com.example.initial.persistence.entities.joins.ExchangeableWallet
 import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
 import com.example.initial.viewmodels.vouchers.VouchersViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,6 +59,8 @@ import java.util.Locale
 fun VouchersScreen(
     navController: NavController, vouchersViewModel: VouchersViewModel
 ) {
+    val context = LocalContext.current
+
     var vouchers by remember { mutableStateOf(listOf<Voucher>()) }
 
     LaunchedEffect(key1 = vouchersViewModel) {
@@ -172,6 +180,15 @@ fun VouchersScreen(
                                             fontFamily = nunitoSansFont,
                                             fontSize = 14.sp
                                         )
+                                        Button(onClick = {
+                                            vouchersViewModel.delete(voucher.id)
+                                            (context as ComponentActivity).lifecycleScope.launch {
+                                                Toast.makeText(context, "Voucher Deleted", Toast.LENGTH_SHORT).show()
+                                            }
+                                            navController.popBackStack()
+                                        }) {
+                                            Text(text = "Delete")
+                                        }
                                     }
                                 }
 
