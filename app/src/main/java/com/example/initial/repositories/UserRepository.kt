@@ -11,4 +11,8 @@ class UserRepository(private val userInterface: IUser) {
     suspend fun list(): List<User> {
         return userInterface.list()
     }
+
+    suspend fun get(userId: Int): User? {
+        return userInterface.get(userId)
+    }
 }

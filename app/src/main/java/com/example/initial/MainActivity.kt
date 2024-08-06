@@ -20,12 +20,14 @@ import com.example.initial.persistence.db.AppDatabase
 import com.example.initial.repositories.CategoryRepository
 import com.example.initial.repositories.DonationsRepository
 import com.example.initial.repositories.ExchangeableRepository
+import com.example.initial.repositories.LeaderboardRepository
 import com.example.initial.repositories.UserRepository
 import com.example.initial.repositories.VoucherRepository
 import com.example.initial.repositories.WalletRepository
 import com.example.initial.screens.DonationsScreen
 import com.example.initial.screens.GiveScreen
 import com.example.initial.screens.HomeScreen
+import com.example.initial.screens.LeaderboardScreen
 import com.example.initial.screens.LoginScreen
 import com.example.initial.screens.VouchersScreen
 import com.example.initial.screens.WalletScreen
@@ -37,6 +39,8 @@ import com.example.initial.viewmodels.give.GiveViewModel
 import com.example.initial.viewmodels.give.GiveViewModelFactory
 import com.example.initial.viewmodels.login.LoginViewModel
 import com.example.initial.viewmodels.helpers.user.sessions.UserSessionViewModel
+import com.example.initial.viewmodels.leaderboard.LeaderboardViewModel
+import com.example.initial.viewmodels.leaderboard.LeaderboardViewModelFactory
 import com.example.initial.viewmodels.login.LoginViewModelFactory
 import com.example.initial.viewmodels.vouchers.VouchersViewModel
 import com.example.initial.viewmodels.vouchers.VouchersViewModelFactory
@@ -107,6 +111,17 @@ fun AppNavigator(database: AppDatabase, userSessionViewModel: UserSessionViewMod
             val viewModel: VouchersViewModel =
                 viewModel(factory = VouchersViewModelFactory(repository, userSessionViewModel))
             VouchersScreen(navController, viewModel)
+        }
+        composable("leaderboard") {
+            val iUser = database.IUser()
+            val userRepository = UserRepository(iUser)
+            val iVoucher = database.IVoucher()
+            val iWallet = database.IWallet()
+            val walletRepository = WalletRepository(iWallet, iVoucher, userSessionViewModel)
+            val repository = LeaderboardRepository(userRepository, walletRepository, userSessionViewModel)
+            val viewModel: LeaderboardViewModel =
+                viewModel(factory = LeaderboardViewModelFactory(repository))
+            LeaderboardScreen(navController, viewModel)
         }
     }
 }

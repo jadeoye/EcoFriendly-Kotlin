@@ -16,4 +16,7 @@ interface IUser {
 
     @Query("SELECT * FROM users")
     suspend fun list(): List<User>
+
+    @Query("SELECT * FROM users WHERE id = :userId AND isDeleted = 0")
+    suspend fun get(userId: Int): User?
 }

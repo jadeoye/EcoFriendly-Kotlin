@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -86,7 +87,7 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
                                     .clickable {},
                                 imageVector = Icons.Default.Notifications,
                                 contentDescription = "",
-                                tint = Color.White,
+                                tint = Color.Transparent,
                             )
                         }
                     }
@@ -206,6 +207,41 @@ fun HomeScreen(navController: NavController, userSessionViewModel: UserSessionVi
                                 )
                                 Text(
                                     text = "Wallet",
+                                    color = primary_color,
+                                    fontFamily = nunitoSansFont
+                                )
+                            }
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 30.dp, 0.dp, 0.dp),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(light_bg_blue_color)
+                                .border(1.dp, primary_color, RoundedCornerShape(16.dp))
+                                .clickable {
+                                    navController.navigate("leaderboard")
+                                }
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AccountCircle,
+                                    contentDescription = "",
+                                    tint = primary_color
+                                )
+                                Text(
+                                    text = "Top Donors",
                                     color = primary_color,
                                     fontFamily = nunitoSansFont
                                 )
