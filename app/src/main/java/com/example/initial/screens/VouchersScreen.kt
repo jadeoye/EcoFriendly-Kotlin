@@ -181,7 +181,7 @@ fun VouchersScreen(
                                             fontSize = 14.sp
                                         )
                                         Button(onClick = {
-                                            vouchersViewModel.delete(voucher.id)
+                                            vouchersViewModel.delete(voucher.id, context)
                                             (context as ComponentActivity).lifecycleScope.launch {
                                                 Toast.makeText(context, "Voucher Deleted", Toast.LENGTH_SHORT).show()
                                             }

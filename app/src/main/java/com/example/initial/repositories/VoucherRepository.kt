@@ -14,10 +14,15 @@ class VoucherRepository(private val voucherInterface: IVoucher,
         return voucherInterface.list(userId)
     }
 
-    suspend fun delete(voucherId: Int) {
+    fun getRedeemablePoints(points: Int): Double {
+        return points * 0.02
+    }
+
+    suspend fun delete(voucherId: Int) : Pair<Double, Double> {
         val userId = userSessionViewModel.user.value!!.id
         val currentWallet = walletInterface.currentWallet(userId)
         val voucher = voucherInterface.get(voucherId)
+        val cashRedeemed = getRedeemablePoints(voucher!!.points)
 
        if(voucher == null) {
 
@@ -30,7 +35,9 @@ class VoucherRepository(private val voucherInterface: IVoucher,
            )
 
            walletInterface.add(wallet)
-           return voucherInterface.delete(voucherId)
+           voucherInterface.delete(voucherId)
        }
+
+        return Pair(-1 * voucher!!.points.toDouble(), -1 * cashRedeemed)
     }
 }
